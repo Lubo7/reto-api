@@ -7,7 +7,12 @@ module.exports = mongoose => {
           fechaDevolucion: String,
           peliculaId: String, 
           precio: Number,
-          clienteId: String
+          clienteId: String,
+          activo: Boolean,
+          usuario:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'User'
+          }
         },
         { timestamps: true }
       )

@@ -5,7 +5,7 @@ const PedidoController = {}; //Create the object controller
 
 //CRUD end-points Functions
 //-------------------------------------------------------------------------------------
-// Create and Save a new Pedido
+// Create and Save a new Order
 PedidoController.create = (req, res) => {
   // Validate request
   if (!req.body) {
@@ -13,7 +13,7 @@ PedidoController.create = (req, res) => {
     return;
   }
 
-  // Create a Pedido
+  // Create an Order
   const pedido = new Pedido({
     fechaAlquiler: req.body.fechaAlquiler,
     fechaDevolucion: req.body.fechaDevolucion,
@@ -31,7 +31,7 @@ PedidoController.create = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Tutorial."
+          err.message || "Some error occurred while creating the order."
       });
     });
 };
@@ -55,6 +55,33 @@ PedidoController.findAll = (req, res) => {
     });
 };
 
+// Find a Order with a userId
+PedidoController.findByUser = (req, res) => {
+  const userId = req.params.clienteId;
+  Pedido.find({clienteId: userId})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving Movie with title=" + userId });
+    });
+  };
 
+  PedidoController.findOne = (req, res) => {
+    const id = req.params.id;
+    Pedido.findById(id)
+      .then(data => {
+        if (!data)
+          res.status(404).send({ message: "Not found Order with id " + id });
+        else res.send(data);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .send({ message: "Error retrieving Order with id=" + id });
+      });
+  };
 
 module.exports = PedidoController;
